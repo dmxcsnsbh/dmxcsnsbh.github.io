@@ -89,22 +89,22 @@
 <meta name="description" content="First of all, this is the first browser-related CTF challenge I ever made. I’m very glad to see that players are actively participating. In the end, 29 teams solved Chromium RCE, 7 teams solved Chromi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="0CTF&#x2F;TCTF 2020 Chromium series challenge">
-<meta property="og:url" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/index.html">
+<meta property="og:url" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/index.html">
 <meta property="og:site_name" content="一年一更">
 <meta property="og:description" content="First of all, this is the first browser-related CTF challenge I ever made. I’m very glad to see that players are actively participating. In the end, 29 teams solved Chromium RCE, 7 teams solved Chromi">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem1.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem2.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/gdb1.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem3.png">
+<meta property="og:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
+<meta property="og:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem1.png">
+<meta property="og:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem2.png">
+<meta property="og:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/gdb1.png">
+<meta property="og:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/mem3.png">
 <meta property="article:published_time" content="2020-07-19T17:42:34.000Z">
 <meta property="article:modified_time" content="2020-07-19T19:24:31.007Z">
 <meta property="article:author" content="Gengming Liu">
 <meta property="article:tag" content="Chrome">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
+<meta name="twitter:image" content="https://dmxcsnsbh.github.com/2020/07/20/0CTF-TCTF-2020-Chromium-series-challenge/twitter.png">
 
 
 
@@ -681,7 +681,6 @@
 
   
   
-  
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {
@@ -701,107 +700,6 @@
     });
   </script>
   <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("HfEUHBkxIxPKFFWsM8E29K81-gzGzoHsz", "j8gTHCF5cxmeGRbV0QIujeUw");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
 
 
 
